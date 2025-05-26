@@ -32,7 +32,7 @@ class CNN(nn.Module):
 # ---- Model Loader ----
 def load_model(model_path, num_classes, device):
     model = CNN(num_classes=num_classes)
-    checkpoint = torch.load(model_path, map_location=device)
+    checkpoint = torch.load(model_path, map_location=device, weights_only=True)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()

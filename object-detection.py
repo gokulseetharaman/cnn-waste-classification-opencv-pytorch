@@ -40,7 +40,7 @@ class WebcamPredictor:
         print(f"Using device: {self.device}")
 
         # Load the saved model
-        checkpoint = torch.load(model_path, map_location=self.device)
+        checkpoint = torch.load(model_path, map_location=self.device, weights_only= True)
         self.class_names = checkpoint['class_names']
 
         # Initialize model
