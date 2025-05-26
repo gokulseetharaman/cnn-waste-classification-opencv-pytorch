@@ -4,6 +4,13 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
+
+
+
+
 # ---- CNN Definition (same as your model) ----
 class CNN(nn.Module):
     def __init__(self, num_classes=12):
@@ -54,7 +61,7 @@ def main():
 
     # Load test data
     test_dataset = ImageFolder(root=test_dir, transform=test_transform)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
     # Load model
     model = load_model(model_path, num_classes, device)
@@ -62,6 +69,8 @@ def main():
     # Evaluate
     correct = 0
     total = 0
+    all_preds = []
+    all_labels = []
     with torch.no_grad():
         for images, labels in test_loader:
             images, labels = images.to(device), labels.to(device)
@@ -69,9 +78,25 @@ def main():
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+            all_preds.extend(predicted.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
 
     accuracy = 100 * correct / total
     print(f"Test Accuracy: {accuracy:.2f}%")
+
+    report = classification_report(all_labels, all_preds, target_names=test_dataset.classes, digits=2)
+    print(report)
+
+    # Confusion Matrix
+    cm = confusion_matrix(all_labels, all_preds)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=test_dataset.classes)
+    disp.plot(cmap=plt.cm.Blues, xticks_rotation="vertical")
+    plt.title("Confusion Matrix")
+    plt.tight_layout()
+    plt.show()
+
+
+
 
 if __name__ == "__main__":
     main()
