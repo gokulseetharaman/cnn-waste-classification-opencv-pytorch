@@ -316,10 +316,3 @@ The model achieved a validation accuracy of **89.5%**. Below are the detailed pr
 * IBM Deep Learning with PyTorch Course
 * Gyawali, D., Regmi, A., Shakya, A., Gautam, A., and Shrestha, S., 2020. Comparative analysis of multiple deep CNN models for waste classification. arXiv preprint arXiv:2004.02168.
 * Kaggle Garbage Classification Dataset
-
----
-
-## Author
-
-**Gokul Seetharaman**
-This project encapsulates my journey in mastering deep learning, blending theoretical insights with practical application to tackle waste classification. Explore the repository, try the model, and feel free to contribute!
